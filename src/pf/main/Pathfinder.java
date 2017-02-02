@@ -1,6 +1,7 @@
 package pf.main;
 
 import java.util.*;
+import pf.main.Grid.Node;
 
 /**
  * @author Justin Praas
@@ -41,15 +42,15 @@ public class Pathfinder {
 
             for (Node neighbor : current.getNeighbors()) {
                 if (closedSet.contains(neighbor)) {
-                    break;
+                    continue;
                 }
 
-                double temp_gScore = gScore.get(current);
+                double temp_gScore = gScore.get(current) + 1;
 
                 if (!closedSet.contains(neighbor)) {
                     openSet.add(neighbor);
                 } else if (temp_gScore >= gScore.get(neighbor)) {
-                    break;
+                    continue;
                 }
 
                 cameFrom.put(neighbor, current);
@@ -61,10 +62,10 @@ public class Pathfinder {
         return null;
     }
 
-    public double heuristicCost(Node from, Node to) {
+	public double heuristicCost(Node from, Node to) {
 		return Math.sqrt(
-				Math.pow(Math.abs(from.getY() - to.getY()), 2) +
-	            Math.pow(Math.abs(from.getX() - to.getX()), 2));
+				Math.pow(Math.abs(from.getC() - to.getC()), 2) +
+	            Math.pow(Math.abs(from.getR() - to.getR()), 2));
     }
 
     public Node getLowestValue(Set<Node> set, Map<Node, Double> map) {

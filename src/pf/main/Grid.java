@@ -1,20 +1,72 @@
 package pf.main;
 
+import java.util.ArrayList;
+
 /**
  * @author Justin Praas
  */
 public class Grid {
 
-    private int height;
-    private int width;
-
+	private int width;
+	private int height;
     private int columns;
     private int rows;
 
-    public Node start;
+	public Node start;
     public Node goal;
 
     private Node[][] nodes;
+
+	public class Node {
+
+		private int c;
+		private int r;
+		private int x;
+		private int y;
+		private int nodeWidth = width/columns;
+		private int nodeHeight = height/rows;
+		private boolean obstacle = false;
+		private ArrayList<Node> neighbors = new ArrayList<Node>();
+
+		public Node(int c, int r) {
+			this.c = c;
+			this.r = r;
+			this.x = c + c * nodeWidth;
+			this.y = r + r * nodeHeight;
+		}
+
+		public boolean isObstacle() {
+			return obstacle;
+		}
+
+		public void setObstacle(boolean value) {
+			obstacle = value;
+		}
+
+		public void setNeighbor(Node n) {
+			neighbors.add(n);
+		}
+
+		public ArrayList<Node> getNeighbors() {
+			return neighbors;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getC() {
+			return c;
+		}
+
+		public int getR() {
+			return r;
+		}
+	}
 
     public Grid(int height, int width, int columns, int rows) {
 
