@@ -9,7 +9,7 @@ import pf.main.Grid.Node;
 public class Pathfinder {
 
     public ArrayList<Node> aStar(Grid grid) {
-        Node current;
+        Node current = null;
 
         Set<Node> closedSet = new HashSet<>();
         Set<Node> openSet = new HashSet<>();
@@ -41,7 +41,7 @@ public class Pathfinder {
             closedSet.add(current);
 
             for (Node neighbor : current.getNeighbors()) {
-                if (closedSet.contains(neighbor)) {
+                if (closedSet.contains(neighbor) || neighbor.isObstacle()) {
                     continue;
                 }
 
@@ -59,7 +59,7 @@ public class Pathfinder {
 
             }
         }
-        return null;
+        return reconstructPath(cameFrom, current);
     }
 
 	public double heuristicCost(Node from, Node to) {
