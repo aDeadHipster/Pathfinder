@@ -148,23 +148,21 @@ public class Grid extends JPanel {
 		Pathfinder pathFinder = new Pathfinder();
 		ArrayList<Node> path = pathFinder.aStar(this);
 
-
-		double scale = 1.1;
 		for (int c = 0; c < columns; c++) {
 			for (int r = 0; r < rows; r++) {
 				Node node = nodes[c][r];
 				if (node.obstacle) {
 					g2.setColor(Color.BLACK);
 				} else {
-					g2.setColor(Color.WHITE);
+					g2.setColor(Color.LIGHT_GRAY);
 				}
-				g2.fillRect(node.getX(), node.getY(), node.nodeWidth,
-						node.nodeHeight);
+				g2.fillOval(node.getX() + node.nodeWidth/4, node.getY() + node.nodeHeight/4, node.nodeWidth/2,
+						node.nodeHeight/2);
 			}
 		}
 		if (path != null) {
 			Node temp = path.get(0);
-			g2.setColor(Color.RED);
+			g2.setColor(Color.getHSBColor(4,3, 2));
 			float[] dash = {(float) 0.3, (float) 0.4};
 			for (Node node : path) {
 				g2.setStroke(new BasicStroke(3));

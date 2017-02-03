@@ -21,7 +21,7 @@ public class Main {
 		Dimension d = new Dimension();
 		d.setSize(width, height);
 		panel.setPreferredSize(d);
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(Color.LIGHT_GRAY);
 		frame.add(panel);
 
 		frame.pack();
