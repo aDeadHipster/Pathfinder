@@ -110,63 +110,23 @@ public class Grid extends JPanel {
 		start = nodes[0][0];
 		goal = nodes[columns - 1][rows - 1];
 
-		assignNeighbours();
-	}
-
-	private void assignNeighbours() {
-		for (int c = 1; c < columns - 1; c++) {
-			for (int r = 1; r < rows - 1; r++) {
-				nodes[c][r].setAllNeighbors(nodes[c][r]);
+		for (int c = 0; c < columns; c++) {
+			for (int r = 0; r < rows; r++) {
+				assignNeighbours(c, r);
 			}
 		}
+	}
 
-		for (int i = 1; i < columns - 1; i++) {
+	private void assignNeighbours(int i, int j) {
 
-			// top row
-			nodes[i][0].setNeighbor(nodes[i][1]);
-			nodes[i][0].setNeighbor(nodes[i - 1][0]);
-			nodes[i][0].setNeighbor(nodes[i + 1][0]);
-			nodes[i][0].setNeighbor(nodes[i - 1][1]);
-			nodes[i][0].setNeighbor(nodes[i + 1][1]);
-
-			// bottom row
-			nodes[i][rows - 1].setNeighbor(nodes[i][rows - 2]);
-			nodes[i][rows - 1].setNeighbor(nodes[i - 1][rows - 1]);
-			nodes[i][rows - 1].setNeighbor(nodes[i + 1][rows - 1]);
-			nodes[i][rows - 1].setNeighbor(nodes[i - 1][rows - 2]);
-			nodes[i][rows - 1].setNeighbor(nodes[i + 1][rows - 2]);
-
-			// left column
-			nodes[0][i].setNeighbor(nodes[1][i]);
-			nodes[0][i].setNeighbor(nodes[0][i - 1]);
-			nodes[0][i].setNeighbor(nodes[0][i + 1]);
-			nodes[0][i].setNeighbor(nodes[1][i - 1]);
-			nodes[0][i].setNeighbor(nodes[1][i + 1]);
-
-			// right column
-			nodes[columns - 1][i].setNeighbor(nodes[columns - 2][i]);
-			nodes[columns - 1][i].setNeighbor(nodes[columns - 1][i - 1]);
-			nodes[columns - 1][i].setNeighbor(nodes[columns - 1][i + 1]);
-			nodes[columns - 1][i].setNeighbor(nodes[columns - 2][i - 1]);
-			nodes[columns - 1][i].setNeighbor(nodes[columns - 2][i + 1]);
+		// Find and assign all neighbors
+		for (int c = Math.max(0, i - 1); c <= Math.min(i + 1, columns - 1); c++) {
+			for (int r = Math.max(0, j - 1); r <= Math.min(j + 1, rows - 1); r++) {
+				if (c != i || r != j) {
+					nodes[i][j].setNeighbor(nodes[c][r]);
+				}
+			}
 		}
-
-		nodes[0][0].setNeighbor(nodes[1][1]);
-		nodes[0][0].setNeighbor(nodes[0][1]);
-		nodes[0][0].setNeighbor(nodes[1][0]);
-
-		nodes[columns - 1][0].setNeighbor(nodes[columns - 2][1]);
-		nodes[columns - 1][0].setNeighbor(nodes[columns - 2][0]);
-		nodes[columns - 1][0].setNeighbor(nodes[columns - 1][1]);
-
-		nodes[columns - 1][rows - 1].setNeighbor(nodes[columns - 2][rows - 1]);
-		nodes[columns - 1][rows - 1].setNeighbor(nodes[columns - 1][rows - 2]);
-		nodes[columns - 1][rows - 1].setNeighbor(nodes[columns - 2][rows - 2]);
-
-		nodes[0][rows - 1].setNeighbor(nodes[1][rows - 1]);
-		nodes[0][rows - 1].setNeighbor(nodes[1][rows - 2]);
-		nodes[0][rows - 1].setNeighbor(nodes[0][rows - 2]);
-
 	}
 
 	public int getColumns() {
@@ -185,12 +145,11 @@ public class Grid extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-
 		Pathfinder pathFinder = new Pathfinder();
 		ArrayList<Node> path = pathFinder.aStar(this);
 
 
+		double scale = 1.1;
 		for (int c = 0; c < columns; c++) {
 			for (int r = 0; r < rows; r++) {
 				Node node = nodes[c][r];
@@ -199,14 +158,18 @@ public class Grid extends JPanel {
 				} else {
 					g2.setColor(Color.WHITE);
 				}
-				g2.fillRect(node.getX(), node.getY(), node.nodeWidth, node.nodeHeight);
+				g2.fillRect(node.getX(), node.getY(), node.nodeWidth,
+						node.nodeHeight);
 			}
 		}
 		if (path != null) {
+			Node temp = path.get(0);
 			g2.setColor(Color.RED);
+			float[] dash = {(float) 0.3, (float) 0.4};
 			for (Node node : path) {
-				g2.fillRect(node.getX(), node.getY(), node.nodeWidth,
-						node.nodeHeight);
+				g2.setStroke(new BasicStroke(3));
+				g2.drawLine(temp.getX() + temp.nodeWidth/2, temp.getY() + temp.nodeHeight/2, node.getX() + node.nodeWidth/2, node.getY() + node.nodeHeight/2);
+				temp = node;
 			}
 		}
 

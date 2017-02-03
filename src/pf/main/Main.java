@@ -14,10 +14,14 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 
-		JPanel panel = new Grid(300, 300, 50, 50, 0.3);
+		// Rules: Height and width should be a multiple of columns and rows
+		int width = 800;
+		int height = 800;
+		JPanel panel = new Grid(width, height, 40, 40, .35);
 		Dimension d = new Dimension();
-		d.setSize(300, 300);
+		d.setSize(width, height);
 		panel.setPreferredSize(d);
+		panel.setBackground(Color.WHITE);
 		frame.add(panel);
 
 		frame.pack();
